@@ -1,27 +1,3 @@
-<div class="landing-page">
-  <!-- Top Bar -->
-  <mat-toolbar color="primary" class="top-bar">
-    <button mat-button routerLink="/" class="logo">FitShop</button>
-    <span class="spacer"></span>
-    <div style="display: flex;">
-      <button class="nav-button" mat-button routerLink="/">Shop</button>
-      <button class="nav-button" mat-button routerLink="/member">Member</button>
-      <button class="nav-button" mat-button routerLink="/blog">Blog</button>
-      <button mat-icon-button aria-label="Search">
-         <mat-icon>search</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Search">
-        <mat-icon>cart</mat-icon>
-     </button>
-    </div>
-  </mat-toolbar>
-
-  <!-- Hero Section -->
-  <div class="hero-section">
-    <div class="hero-content">
-      <h1>Fuel Your Fitness</h1>
-      <p>Shop the best supplements, gear and apparel</p>
-      <button mat-raised-button>Shop Now</button>
-    </div>
-  </div>
+<div>
+  <router-outlet></router-outlet>
 </div>

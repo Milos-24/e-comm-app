@@ -1,0 +1,54 @@
+<div class="shop-page">
+    <mat-toolbar class="top-bar" style="display: flex; justify-content: space-between; color: #000;">
+      <button mat-button routerLink="/" class="logo">FitShop</button>
+            
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="nav-button" mat-button routerLink="/shop">Shop</button>
+        <button class="nav-button" mat-button routerLink="/member">Members</button>
+        <button class="nav-button" mat-button routerLink="/blog">Blog</button>
+        <button mat-icon-button aria-label="Cart" style="color: white; background-color: transparent; cursor: pointer; border: 0cap;">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Search" style="color: white; background-color: transparent; cursor: pointer; border: 0cap;">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+  <div class="shop-content">
+    <div class="filters">
+      <h3>Filteri</h3>
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Kategorija</mat-label>
+        <mat-select [(ngModel)]="selectedCategory">
+          <mat-option value="">Sve</mat-option>
+          <mat-option value="">Odjеća</mat-option>
+          <mat-option value="">Hrana</mat-option>
+          <mat-option value="">Suplementi</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Pretraga</mat-label>
+        <input matInput [(ngModel)]="searchTerm" placeholder="Unesi naziv proizvoda">
+      </mat-form-field>
+
+    </div>
+
+    <div class="product-grid"
+    (scroll)="onScroll($event)">
+    <mat-card *ngFor="let product of allProducts" class="product-card">
+      <img mat-card-image [src]="product?.imageUrl" alt="{{ product?.name }}">
+      <mat-card-content>
+        <h3>{{ product?.name }}</h3>
+        <p>{{ product?.price | currency:'RSD':'symbol':'1.0-0' }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary">Detaljnije</button>
+      </mat-card-actions>
+    </mat-card>
+    </div>
+
+  </div>
+</div>
