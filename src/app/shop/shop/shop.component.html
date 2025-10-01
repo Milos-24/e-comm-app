@@ -1,54 +1,72 @@
 <div class="shop-page">
-    <mat-toolbar class="top-bar" style="display: flex; justify-content: space-between; color: #000;">
-      <button mat-button routerLink="/" class="logo">FitShop</button>
-            
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <button class="nav-button" mat-button routerLink="/shop">Shop</button>
-        <button class="nav-button" mat-button routerLink="/member">Members</button>
-        <button class="nav-button" mat-button routerLink="/blog">Blog</button>
-        <button mat-icon-button aria-label="Cart" style="color: white; background-color: transparent; cursor: pointer; border: 0cap;">
-          <mat-icon>shopping_cart</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Search" style="color: white; background-color: transparent; cursor: pointer; border: 0cap;">
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
+  <mat-toolbar class="top-bar">
+    <button mat-button routerLink="/" class="logo">FitShop</button>
+
+    <div class="nav-links">
+      <button class="nav-button" mat-button routerLink="/shop">Shop</button>
+      <!-- <button class="nav-button" mat-button routerLink="/member">Members</button> -->
+      <button class="nav-button" mat-button routerLink="/blog">Blog</button>
+      <button mat-icon-button aria-label="Cart">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Search" class="search-button" (click)="toggleSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Profile" routerLink="/login">
+        <mat-icon>person</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <div class="search-dropdown" [class.open]="showSearch">
+    <input type="text" placeholder="Search" class="custom-search-input" />
+  </div>
 
   <div class="shop-content">
-    <div class="filters">
-      <h3>Filteri</h3>
+    <aside class="filters">
+      <h3 class="filter-heading">Filteri Po Cijeni</h3>
+
+      <div class="custom-slider">
+        <div class="range-inputs">
+          <input type="range" [min]="minPrice" [max]="maxPrice" [(ngModel)]="minSelected" (input)="onSliderChange()"
+            class="range left" />
+          <input type="range" [min]="minPrice" [max]="maxPrice" [(ngModel)]="maxSelected" (input)="onSliderChange()"
+            class="range right" />
+        </div>
+        <div class="range-values">
+          <span>{{ minSelected | currency:'$' }}</span>
+          <span>{{ maxSelected | currency:'$' }}</span>
+        </div>
+      </div>
+
+      <h3 class="filter-heading" style="padding-top: 25px;">Kategorije</h3>
+
+
       <mat-form-field appearance="fill" class="filter-field">
-        <mat-label>Kategorija</mat-label>
         <mat-select [(ngModel)]="selectedCategory">
           <mat-option value="">Sve</mat-option>
-          <mat-option value="">Odjеća</mat-option>
-          <mat-option value="">Hrana</mat-option>
-          <mat-option value="">Suplementi</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
+    </aside>
 
-      <mat-form-field appearance="fill" class="filter-field">
-        <mat-label>Pretraga</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Unesi naziv proizvoda">
-      </mat-form-field>
+    <main class="product-grid">
+      <mat-card *ngFor="let product of allProducts" class="product-card">
+        <img mat-card-image [src]="product.imageUrls[0]" alt="{{ product.name }}">
 
-    </div>
+        <mat-card-content>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price | currency:'$':'symbol':'1.0-0' }}</p>
+        </mat-card-content>
 
-    <div class="product-grid"
-    (scroll)="onScroll($event)">
-    <mat-card *ngFor="let product of allProducts" class="product-card">
-      <img mat-card-image [src]="product?.imageUrl" alt="{{ product?.name }}">
-      <mat-card-content>
-        <h3>{{ product?.name }}</h3>
-        <p>{{ product?.price | currency:'RSD':'symbol':'1.0-0' }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary">Detaljnije</button>
-      </mat-card-actions>
-    </mat-card>
-    </div>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" class="detail-button">Detaljnije</button>
+        </mat-card-actions>
+      </mat-card>
+    </main>
+
 
   </div>
 </div>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { ProductService, Product } from '../../product.service';
 
 @Component({
   selector: 'app-shop',
@@ -6,109 +7,53 @@ import { Component } from '@angular/core';
   styleUrls: ['./shop.component.css'],
   standalone: false
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit {
   searchQuery: string = '';
+  minPrice = 0;
+  maxPrice = 10000;
+  minSelected = 1000;
+  maxSelected = 8000;
 
+  showSearch = false;
+  selectedCategory: string = '';
+  categories: string[] = [];  // could populate dynamically from products
+  products: Product[] = [];
+  allProducts: Product[] = [];
 
-selectedCategory: any;
-categories: any;
-searchTerm: any;
-products = []
-allProducts = [    {
-  name: 'Muška majica - Crna',
-  imageUrl: '/assets/product.jpg',
-  price: 1990
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-},
-{
-  name: 'Ženska helanke - Sive',
-  imageUrl: '/assets/product.jpg',
-  price: 2990
-},
-{
-  name: 'Duks sa kapuljačom',
-  imageUrl: '/assets/product.jpg',
-  price: 3490
-}];
-batchSize = 10;
-currentIndex = 0;
+  batchSize = 10;
+  currentIndex = 0;
+  https: any;
 
-ngOnInit() {
-  this.loadMoreProducts();
-}
+  constructor(private productService: ProductService) { }
 
-onScroll(event: Event): void {
-  const target = event.target as HTMLElement;
+  ngOnInit() {
+    this.productService.getAllProducts().subscribe(data => {
+      this.allProducts = data;
+    });
 
-  if (target.scrollTop + target.clientHeight >= target.scrollHeight - 200) {
-    this.loadMoreProducts();
+    this.productService.getAllCategories().subscribe(data => {
+      this.categories = data;
+    });
   }
-}
 
-loadMoreProducts(): void {
-  const nextBatch = this.allProducts.slice(this.currentIndex, this.currentIndex + this.batchSize);
-  this.products.push();
-  this.currentIndex += this.batchSize;
-}
+  toggleSearch() {
+    this.showSearch = !this.showSearch;
+  }
 
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.search-dropdown') && !target.closest('.search-button')) {
+      this.showSearch = false;
+    }
+  }
+
+  onSliderChange(): void {
+    if (this.minSelected > this.maxSelected) {
+      const temp = this.minSelected;
+      this.minSelected = this.maxSelected;
+      this.maxSelected = temp;
+    }
+  }
 
 }
