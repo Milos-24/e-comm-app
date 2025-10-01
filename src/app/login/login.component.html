@@ -20,13 +20,12 @@
   <div class="hero-section">
     <div class="hero-content">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <h2>Welcom to FitShop</h2>
+        <h2>Welcome to FitShop</h2>
 
         <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required>
-          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
-          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Enter a valid email</mat-error>
+          <mat-label>Username</mat-label>
+          <input matInput type="username" formControlName="username" required>
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">Username is required</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="full-width">
@@ -35,15 +34,12 @@
           <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-          Login
-        </button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+
       </form>
 
     </div>
   </div>
-
-  <!-- <div class="login-form-container" *ngIf="showLoginForm">
-    
-  </div> -->
 </div>

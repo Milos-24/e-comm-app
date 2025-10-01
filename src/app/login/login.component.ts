@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,10 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   loginForm: FormGroup;
   showLoginForm = false;
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required],], 
       password: ['', Validators.required]
     });
   }
@@ -23,8 +26,16 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Login data:', this.loginForm.value);
-      // TODO: integrate with authentication service
+      const { username, password } = this.loginForm.value;
+      this.authService.login(username, password).subscribe({
+        next: () => {
+          this.errorMessage = null;
+          this.router.navigate(['/shop']);
+        },
+        error: (err) => {
+          this.errorMessage = err?.error?.error || 'Invalid username or password';
+        }
+      });
     }
   }
 }

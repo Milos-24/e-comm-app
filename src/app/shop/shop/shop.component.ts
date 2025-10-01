@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ProductService, Product } from '../../product.service';
+import { ProductService, Product } from '../../services/product.service';
 
 @Component({
   selector: 'app-shop',
